@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_kaisarassiphergui" default="compile.module.kaisarassiphergui">
+  <dirname property="module.kaisarassiphergui.basedir" file="${ant.file.module_kaisarassiphergui}"/>
+  
+  <property name="module.jdk.home.kaisarassiphergui" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.kaisarassiphergui" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.kaisarassiphergui" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.kaisarassiphergui" value="-encoding UTF-8 -source 12 -target 12 ${compiler.args}"/>
+  
+  <property name="kaisarassiphergui.output.dir" value="${module.kaisarassiphergui.basedir}/out/production/KaisarasSipherGUI"/>
+  <property name="kaisarassiphergui.testoutput.dir" value="${module.kaisarassiphergui.basedir}/out/test/KaisarasSipherGUI"/>
+  
+  <path id="kaisarassiphergui.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="kaisarassiphergui.module.production.classpath">
+    <path refid="${module.jdk.classpath.kaisarassiphergui}"/>
+  </path>
+  
+  <path id="kaisarassiphergui.runtime.production.module.classpath">
+    <pathelement location="${kaisarassiphergui.output.dir}"/>
+  </path>
+  
+  <path id="kaisarassiphergui.module.classpath">
+    <path refid="${module.jdk.classpath.kaisarassiphergui}"/>
+    <pathelement location="${kaisarassiphergui.output.dir}"/>
+  </path>
+  
+  <path id="kaisarassiphergui.runtime.module.classpath">
+    <pathelement location="${kaisarassiphergui.testoutput.dir}"/>
+    <pathelement location="${kaisarassiphergui.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.kaisarassiphergui">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.kaisarassiphergui">
+    <patternset refid="excluded.from.module.kaisarassiphergui"/>
+  </patternset>
+  
+  <path id="kaisarassiphergui.module.sourcepath">
+    <dirset dir="${module.kaisarassiphergui.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.kaisarassiphergui" depends="compile.module.kaisarassiphergui.production,compile.module.kaisarassiphergui.tests" description="Compile module KaisarasSipherGUI"/>
+  
+  <target name="compile.module.kaisarassiphergui.production" depends="register.custom.compilers" description="Compile module KaisarasSipherGUI; production classes">
+    <mkdir dir="${kaisarassiphergui.output.dir}"/>
+    <javac2 destdir="${kaisarassiphergui.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.kaisarassiphergui}/javac">
+      <compilerarg line="${compiler.args.kaisarassiphergui}"/>
+      <bootclasspath refid="kaisarassiphergui.module.bootclasspath"/>
+      <classpath refid="kaisarassiphergui.module.production.classpath"/>
+      <src refid="kaisarassiphergui.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.kaisarassiphergui"/>
+    </javac2>
+    
+    <copy todir="${kaisarassiphergui.output.dir}">
+      <fileset dir="${module.kaisarassiphergui.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.kaisarassiphergui.tests" depends="register.custom.compilers,compile.module.kaisarassiphergui.production" description="compile module KaisarasSipherGUI; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.kaisarassiphergui" description="cleanup module">
+    <delete dir="${kaisarassiphergui.output.dir}"/>
+    <delete dir="${kaisarassiphergui.testoutput.dir}"/>
+  </target>
+</project>
